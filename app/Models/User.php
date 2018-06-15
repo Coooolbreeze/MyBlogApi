@@ -11,6 +11,4 @@ class User extends Model
     use HasRoles, SoftDeletes;
 
     protected $dates = ['deleted_at'];
-
-    protected $guarded = [];
 }

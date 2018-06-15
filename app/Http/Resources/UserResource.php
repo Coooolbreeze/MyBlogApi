@@ -6,7 +6,7 @@ use App\Exceptions\BaseException;
 use App\Services\Tokens\TokenFactory;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class UserResource extends JsonResource
+class UserResource extends Resource
 {
     public static function collection($resource)
     {
@@ -14,20 +14,6 @@ class UserResource extends JsonResource
             $collection->collects = __CLASS__;
         });
     }
-
-    /**
-     * 需要隐藏的字段
-     *
-     * @var array
-     */
-    protected $withoutFields = [];
-
-    /**
-     * 需要显示的字段
-     *
-     * @var array
-     */
-    protected $showFields = [];
 
     /**
      * Transform the resource into an array.
@@ -44,34 +30,15 @@ class UserResource extends JsonResource
             'avatar' => $this->avatar,
             'sex' => $this->convertSex($this->sex),
             'account' => $this->account,
-            'phone' => $this->isSelfOrSuper() ? $this->phone : $this->partialHidden($this->phone, 3, 4),
-            'email' => $this->isSelfOrSuper() ? $this->email : $this->partialHidden($this->email, 1, 4),
+            'phone' => $this->isSelfOrAdmin() ? $this->phone : $this->partialHidden($this->phone, 3, 4),
+            'email' => $this->isSelfOrAdmin() ? $this->email : $this->partialHidden($this->email, 1, 4),
             'is_bind_account' => (bool)$this->is_bind_account,
             'is_bind_phone' => (bool)$this->is_bind_phone,
             'is_bind_email' => (bool)$this->is_bind_email,
             'is_bind_wx' => (bool)$this->is_bind_wx,
+            'is_admin' => (bool)$this->is_admin,
             'created_at' => (string)$this->created_at
         ]);
-    }
-
-    public function hide(array $fields)
-    {
-        $this->withoutFields = $fields;
-        return $this;
-    }
-
-    public function show(array $field)
-    {
-        $this->showFields = $field;
-        return $this;
-    }
-
-    protected function filterFields($array)
-    {
-        if (!empty($this->showFields))
-            return collect($array)->only($this->showFields)->toArray();
-
-        return collect($array)->forget($this->withoutFields)->toArray();
     }
 
     /**
@@ -114,18 +81,12 @@ class UserResource extends JsonResource
      * @return bool
      * @throws \Exception
      */
-    public function isSelfOrSuper()
+    public function isSelfOrAdmin()
     {
         try {
-            $uid = TokenFactory::getCurrentUID();
-            $super = TokenFactory::needRole('super');
+            return (TokenFactory::getCurrentUID() == $this->id || TokenFactory::isAdmin());
         } catch (BaseException $e) {
             return false;
         }
-
-        if ($uid == $this->id || $super == true)
-            return true;
-
-        return false;
     }
 }

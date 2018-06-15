@@ -293,8 +293,7 @@ class TokenFactory
     {
         $user = request()->offsetGet('user');
 
-        if (!$user)
-            throw new TokenException();
+        if (!$user) throw new TokenException();
 
         return $user;
     }
@@ -361,5 +360,14 @@ class TokenFactory
         }
 
         return true;
+    }
+
+    public static function isAdmin()
+    {
+        try {
+            return TokenFactory::getCurrentUser()->is_admin;
+        } catch (Exception $exception) {
+            return false;
+        }
     }
 }
