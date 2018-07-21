@@ -54,6 +54,8 @@ class VerificationCode
         if (!$cacheValues) throw new VerificationCodeException('验证码已过期');
         if ($code != $cacheValues['code']) throw new VerificationCodeException();
 
+        Cache::forget($verificationToken);
+
         return $cacheValues['contact'];
     }
 }

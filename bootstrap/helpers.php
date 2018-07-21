@@ -50,6 +50,32 @@ function curl($url, $header = '', $method = 'GET', $body = '')
 }
 
 /**
+ * 设置env配置
+ *
+ * @param array $data
+ */
+function setEnv(array $data)
+{
+    $envPath = base_path() . DIRECTORY_SEPARATOR . '.env';
+
+    $contentArray = collect(file($envPath, FILE_IGNORE_NEW_LINES));
+
+    $contentArray->transform(function ($item) use ($data){
+        foreach ($data as $key => $value){
+            if(str_contains($item, $key)){
+                return $key . '=' . $value;
+            }
+        }
+
+        return $item;
+    });
+
+    $content = implode($contentArray->toArray(), "\n");
+
+    \File::put($envPath, $content);
+}
+
+/**
  * 获取指定长度的随机字符串
  *
  * @param $length
@@ -79,7 +105,8 @@ function makeOrderNo()
     $yCode = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T');
     $orderSn = $yCode[intval(date('Y')) - 2018]
         . strtoupper(dechex(date('m')))
-        . date('d') . substr(time(), -5)
+        . date('d')
+        . substr(time(), -5)
         . substr(microtime(), 2, 5)
         . sprintf('%02d', rand(0, 99));
 
@@ -106,4 +133,20 @@ function getFirstDayOfTheMonth($year = '', $month = '')
     $timestamp = mktime(0, 0, 0, $month, $day, $year);
     $result = date('t', $timestamp);
     return $result;
+}
+
+/**
+ * 截取HTML
+ *
+ * @param $string
+ * @param int $start
+ * @param int $length
+ * @return string
+ */
+function interceptHTML($string, $start = 0, $length = 50)
+{
+    $str = strip_tags($string);
+    $str = str_replace('&nbsp;', '', $str);
+    $str = mb_substr(trim($str), $start, $length, 'utf-8');
+    return $str . '...';
 }
