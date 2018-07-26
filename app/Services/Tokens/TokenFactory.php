@@ -254,21 +254,14 @@ class TokenFactory
      *
      * @param $checkedUID
      * @return bool
-     * @throws \Exception
+     * @throws TokenException
+     * @throws Exception
      */
     public static function isValidOperate($checkedUID)
     {
-        if (!$checkedUID) {
-            throw new Exception('检查UID时必须传入被检查的UID');
-        }
+        if (!$checkedUID) throw new Exception('检查UID时必须传入被检查的UID');
 
-        $currentOperateUID = self::getCurrentUID();
-
-        if ($checkedUID == $currentOperateUID) {
-            return true;
-        }
-
-        return false;
+        return $checkedUID == self::getCurrentUID();
     }
 
     /**

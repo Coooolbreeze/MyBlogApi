@@ -84,8 +84,8 @@ class UserResource extends Resource
     public function isSelfOrAdmin()
     {
         try {
-            return (TokenFactory::getCurrentUID() == $this->id || TokenFactory::isAdmin());
-        } catch (BaseException $e) {
+            return (TokenFactory::isValidOperate($this->id) || TokenFactory::isAdmin());
+        } catch (BaseException $exception) {
             return false;
         }
     }
