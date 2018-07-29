@@ -18,7 +18,7 @@ class CreatePostsTable extends Migration
             $table->unsignedInteger('user_id');
             $table->unsignedInteger('image_id');
             $table->string('title');
-            $table->string('outline')->nullable();
+            $table->string('outline');
             $table->longText('detail');
             $table->unsignedInteger('watch')->default(0);
             $table->unsignedInteger('like')->default(0);

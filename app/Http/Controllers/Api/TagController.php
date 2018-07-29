@@ -28,11 +28,11 @@ class TagController extends ApiController
 
     public function store(StorePostTag $request)
     {
-        Tag::create([
+        $tag = Tag::create([
             'name' => $request->name,
         ]);
 
-        return $this->created();
+        return $this->success((new TagResource($tag))->show(['id', 'name']));
     }
 
     public function update(StorePostTag $request, Tag $tag)

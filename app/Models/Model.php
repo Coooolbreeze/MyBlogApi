@@ -92,12 +92,12 @@ class Model extends EloquentModel
         $eloquent->save();
     }
 
-    public static function getLimit($defaultLimit = 15)
+    public static function getLimit($defaultLimit = 10)
     {
         return Input::get('limit') ?: $defaultLimit;
     }
 
-    public static function pagination($defaultLimit = 15)
+    public static function pagination($defaultLimit = 10)
     {
         return (new static())->paginate(self::getLimit($defaultLimit));
     }

@@ -129,16 +129,23 @@ trait ApiResponse
             ->message($message);
     }
 
+    /**
+     * @param string $message
+     * @return mixed
+     */
     public function updated($message = "updated")
     {
         return $this->setStatusCode(FoundationResponse::HTTP_ACCEPTED)
             ->message($message);
     }
 
-    public function deleted($message = "deleted")
+    /**
+     * @return mixed
+     */
+    public function deleted()
     {
         return $this->setStatusCode(FoundationResponse::HTTP_NO_CONTENT)
-            ->message($message);
+            ->message('');
     }
 
     /**
