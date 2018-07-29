@@ -20,7 +20,7 @@ class UpdateBlogPost extends Request
                 Rule::in(Image::pluck('id')->toArray())
             ],
             'title' => 'max:50',
-            'outline' => 'max:100',
+            'outline' => 'max:255',
             'tags' => [
                 'array',
                 function ($attribute, $value, $fail) {

@@ -21,7 +21,7 @@ class StoreBlogPost extends Request
                 Rule::in(Image::pluck('id')->toArray())
             ],
             'title' => 'required|max:50',
-            'outline' => 'required|max:100',
+            'outline' => 'required|max:255',
             'detail' => 'required',
             'tags' => [
                 'array',
