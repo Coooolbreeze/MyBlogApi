@@ -49,6 +49,6 @@ Route::namespace('Api')->group(function () {
     });
 
     Route::get('/test', function () {
-        return 111;
+        return makeOrderNo();
     });
 });
