@@ -16,7 +16,7 @@ class ImageResource extends Resource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'src' => config('app.url') . '/storage/' . $this->src
+            'src' => config('aliOss.host') . $this->src
         ];
     }
 }
