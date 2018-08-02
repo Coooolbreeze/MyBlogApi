@@ -49,6 +49,6 @@ class AliOss
 
     public function uploadFile($file)
     {
-        return $this->ossClient->uploadFile($this->bucket, $file, '../storage/app/public/' . $file);
+        return $this->ossClient->uploadFile($this->bucket, $file, __DIR__ . '/../../storage/app/public/' . $file);
     }
 }
