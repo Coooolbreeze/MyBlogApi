@@ -26,7 +26,7 @@ class ImageController extends ApiController
         $images = [];
         $paths = [];
 
-        foreach ($request->allFiles() as $file) {
+        foreach ($request->file() as $file) {
             $src = $file->store('blog', 'public');
 
             (new AliOss())->uploadFile($src);
@@ -38,7 +38,7 @@ class ImageController extends ApiController
 
             array_push($paths, $src);
 
-            \Storage::delete($src);
+            \Storage::delete('public/' . $src);
         }
 
         Image::saveAll($images);
