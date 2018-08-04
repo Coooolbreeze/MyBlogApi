@@ -36,6 +36,7 @@ class PostController extends ApiController
 
     public function show(Post $post)
     {
+        $post->increment('watch');
         return $this->success(new PostResource($post));
     }
 

@@ -38,8 +38,8 @@ class PostResource extends Resource
             'next' => Post::where('id', '<', $this->id)
                 ->orderBy('id', 'desc')
                 ->first(['id', 'title']),
-            'created_at' => (string)$this->created_at,
-            'updated_at' => (string)$this->updated_at
+            'created_at' => $this->created_at->toDateString(),
+            'updated_at' => $this->updated_at->toDateString()
         ]);
     }
 }
