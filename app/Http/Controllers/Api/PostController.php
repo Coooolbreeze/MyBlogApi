@@ -40,6 +40,12 @@ class PostController extends ApiController
         return $this->success(new PostResource($post));
     }
 
+    public function watch($id)
+    {
+        Post::findOrFail($id)->increment('watch');
+        return $this->updated();
+    }
+
     public function store(StoreBlogPost $request)
     {
         $post = Post::create([

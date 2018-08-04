@@ -24,6 +24,7 @@ Route::namespace('Api')->group(function () {
 
     Route::apiResource('posts', 'PostController')
         ->only(['index', 'show']);
+    Route::put('/posts/{id}/watch', 'PostController@watch');
 
     /**
      * 需登录后访问
