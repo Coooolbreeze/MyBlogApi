@@ -25,6 +25,7 @@ class TagResource extends Resource
         return $this->filterFields([
             'id' => $this->id,
             'name' => $this->name,
+            'color' => $this->color,
             'posts' => new PostCollection($this->posts()->paginate(Post::getLimit())),
             'posts_number' => $this->posts()->count(),
             'created_at' => (string)$this->created_at

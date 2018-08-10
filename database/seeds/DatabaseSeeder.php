@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
             UsersTableSeeder::class,
             UserAuthsTableSeeder::class,
             ImagesTableSeeder::class,
+            LinksTableSeeder::class,
             CacheFlushSeeder::class,
         ]);
     }

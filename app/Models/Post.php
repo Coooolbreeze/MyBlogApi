@@ -38,12 +38,18 @@ namespace App\Models;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Post whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Post whereUserId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Post whereWatch($value)
+ * @property-read \App\Models\PostStatistic $statistic
  */
 class Post extends Model
 {
     public function tags()
     {
         return $this->belongsToMany('App\Models\Tag');
+    }
+
+    public function statistic()
+    {
+        return $this->hasOne('App\Models\PostStatistic');
     }
 
     public function user()

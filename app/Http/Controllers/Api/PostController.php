@@ -9,11 +9,13 @@
 namespace App\Http\Controllers\Api;
 
 
+use App\Caches\PostStatisticCache;
 use App\Http\Requests\StoreBlogPost;
 use App\Http\Requests\UpdateBlogPost;
 use App\Http\Resources\PostCollection;
 use App\Http\Resources\PostResource;
 use App\Models\Post;
+use App\Models\PostStatistic;
 use App\Services\Tokens\TokenFactory;
 use Illuminate\Http\Request;
 
@@ -36,27 +38,38 @@ class PostController extends ApiController
 
     public function show(Post $post)
     {
-        $post->increment('watch');
+        PostStatisticCache::incWatch($post->id);
         return $this->success(new PostResource($post));
     }
 
     public function watch($id)
     {
-        Post::findOrFail($id)->increment('watch');
-        return $this->updated();
+        PostStatisticCache::incWatch($id);
     }
 
+    public function like($id)
+    {
+        PostStatisticCache::incLike($id);
+    }
+
+    /**
+     * @param StoreBlogPost $request
+     * @return mixed
+     * @throws \Throwable
+     */
     public function store(StoreBlogPost $request)
     {
-        $post = Post::create([
-            'image_id' => $request->image_id,
-            'title' => $request->title,
-            'user_id' => TokenFactory::getCurrentUID(),
-            'outline' => $request->outline,
-            'detail' => $request->detail
-        ]);
-
-        $post->tags()->attach($request->tags);
+        \DB::transaction(function () use ($request) {
+            $post = Post::create([
+                'user_id' => TokenFactory::getCurrentUID(),
+                'image_id' => $request->image_id,
+                'title' => $request->title,
+                'outline' => $request->outline,
+                'detail' => $request->detail
+            ]);
+            $post->tags()->attach($request->tags);
+            PostStatistic::create(['post_id' => $post->id]);
+        });
 
         return $this->created();
     }
@@ -69,9 +82,17 @@ class PostController extends ApiController
         return $this->updated();
     }
 
+    /**
+     * @param Post $post
+     * @return mixed
+     * @throws \Throwable
+     */
     public function destroy(Post $post)
     {
-        $post->delete();
+        \DB::transaction(function () use ($post) {
+            $post->delete();
+            PostStatistic::where('post_id', $post->id)->delete();
+        });
 
         return $this->deleted();
     }

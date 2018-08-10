@@ -30,6 +30,7 @@ class TagController extends ApiController
     {
         $tag = Tag::create([
             'name' => $request->name,
+            'color' => $request->color,
         ]);
 
         return $this->success((new TagResource($tag))->show(['id', 'name']));
@@ -37,7 +38,7 @@ class TagController extends ApiController
 
     public function update(StorePostTag $request, Tag $tag)
     {
-        Tag::updateField($request, $tag, ['name']);
+        Tag::updateField($request, $tag, ['name', 'color']);
 
         return $this->updated();
     }

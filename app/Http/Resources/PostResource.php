@@ -9,6 +9,7 @@
 namespace App\Http\Resources;
 
 
+use App\Caches\PostStatisticCache;
 use App\Models\Post;
 
 class PostResource extends Resource
@@ -22,6 +23,8 @@ class PostResource extends Resource
 
     public function toArray($request)
     {
+        $postStatisticCache = new PostStatisticCache($this->id);
+
         return $this->filterFields([
             'id' => $this->id,
             'author' => (new UserResource($this->user))->show(['id', 'nickname', 'avatar']),
@@ -30,9 +33,9 @@ class PostResource extends Resource
             'outline' => $this->outline,
             'detail' => $this->detail,
             'tags' => TagResource::collection($this->tags)->hide(['posts']),
-            'watch' => (int)$this->watch,
-            'like' => (int)$this->like,
-            'dislike' => (int)$this->dislike,
+            'watch' => (int)$postStatisticCache->getWatch(),
+            'like' => (int)$postStatisticCache->getLike(),
+            'dislike' => (int)$postStatisticCache->getDislike(),
             'prev' => Post::where('id', '>', $this->id)
                 ->first(['id', 'title']),
             'next' => Post::where('id', '<', $this->id)

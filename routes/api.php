@@ -25,6 +25,10 @@ Route::namespace('Api')->group(function () {
     Route::apiResource('posts', 'PostController')
         ->only(['index', 'show']);
     Route::put('/posts/{id}/watch', 'PostController@watch');
+    Route::put('/posts/{id}/like', 'PostController@like');
+
+    Route::apiResource('links', 'LinkController')
+        ->only(['index']);
 
     /**
      * 需登录后访问
@@ -47,9 +51,17 @@ Route::namespace('Api')->group(function () {
 
         Route::apiResource('posts', 'PostController')
             ->only(['store', 'update', 'destroy']);
+
+        Route::apiResource('links', 'LinkController')
+            ->only(['store', 'update', 'destroy']);
     });
 
     Route::get('/test', function () {
+        $postStatisticCache = new \App\Caches\PostStatisticCache(1);
+        $postStatisticCache->incWatch();
+        $postStatisticCache->incLike();
+        $postStatisticCache->incDislike();
+        $postStatisticCache->incComment();
         return makeOrderNo();
     });
 });
