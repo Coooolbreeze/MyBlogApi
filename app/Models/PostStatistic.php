@@ -32,5 +32,8 @@ namespace App\Models;
  */
 class PostStatistic extends Model
 {
-
+    public function post()
+    {
+        return $this->belongsTo('App\Models\Post');
+    }
 }
