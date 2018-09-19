@@ -57,6 +57,7 @@ Route::namespace('Api')->group(function () {
     });
 
     Route::get('/test', function () {
+        return app()->environment();
         $postStatisticCache = new \App\Caches\PostStatisticCache(1);
         $postStatisticCache->incWatch();
         $postStatisticCache->incLike();
