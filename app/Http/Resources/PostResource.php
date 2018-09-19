@@ -36,9 +36,9 @@ class PostResource extends Resource
             'watch' => (int)$postStatisticCache->getWatch(),
             'like' => (int)$postStatisticCache->getLike(),
             'dislike' => (int)$postStatisticCache->getDislike(),
-            'prev' => Post::where('id', '>', $this->id)
+            'prev' => $this->where('id', '>', $this->id)
                 ->first(['id', 'title']),
-            'next' => Post::where('id', '<', $this->id)
+            'next' => $this->where('id', '<', $this->id)
                 ->orderBy('id', 'desc')
                 ->first(['id', 'title']),
             'created_at' => $this->created_at->toDateString(),
