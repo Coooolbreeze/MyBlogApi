@@ -61,4 +61,21 @@ class Post extends Model
     {
         return $this->belongsTo('App\Models\Image');
     }
+
+    public function toESArray()
+    {
+        $arr = array_only($this->toArray(), [
+            'id',
+            'title',
+            'user_id',
+            'outline',
+            'detail'
+        ]);
+
+        $arr['author'] = $this->user->nickname;
+
+        $arr['tags'] = $this->tags()->pluck('name')->toArray();
+
+        return  $arr;
+    }
 }
