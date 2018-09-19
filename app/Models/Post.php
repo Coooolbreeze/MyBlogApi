@@ -9,6 +9,8 @@
 namespace App\Models;
 
 
+use App\Events\PostSaved;
+
 /**
  * App\Models\Post
  *
@@ -42,6 +44,10 @@ namespace App\Models;
  */
 class Post extends Model
 {
+    protected $dispatchesEvents = [
+        'saved' => PostSaved::class
+    ];
+
     public function tags()
     {
         return $this->belongsToMany('App\Models\Tag');
