@@ -9,7 +9,9 @@
 namespace App\Models;
 
 
+use App\Caches\PostStatisticCache;
 use App\Events\PostSaved;
+use App\Exceptions\BaseException;
 
 /**
  * App\Models\Post
@@ -77,6 +79,12 @@ class Post extends Model
             'outline',
             'detail'
         ]);
+
+        $postStatisticCache = new PostStatisticCache($this->id);
+
+        $arr['watch'] = $postStatisticCache->getWatch();
+        $arr['like'] = $postStatisticCache->getLike();
+        $arr['dislike'] = $postStatisticCache->getDislike();
 
         $arr['author'] = $this->user->nickname;
 

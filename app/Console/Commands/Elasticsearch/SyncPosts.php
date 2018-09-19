@@ -63,6 +63,7 @@ class SyncPosts extends Command
                             '_id'    => $data['id'],
                         ],
                     ];
+
                     $req['body'][] = $data;
                 }
                 try {

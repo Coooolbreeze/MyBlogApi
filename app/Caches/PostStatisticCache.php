@@ -9,8 +9,11 @@
 namespace App\Caches;
 
 
+use App\Jobs\Task\SyncOnePostToES;
+use App\Models\Post;
 use App\Models\PostStatistic;
 use Carbon\Carbon;
+use Hhxsv5\LaravelS\Swoole\Task\Task;
 
 /**
  * Class PostStatisticCache
@@ -80,6 +83,10 @@ class PostStatisticCache
             $this->get($key);
         }
         \Cache::tags($this->tags)->increment($key);
+
+        if (app()->environment() === 'production') {
+            Task::deliver(new SyncOnePostToES(Post::find($this->postId)));
+        }
     }
 
     /**

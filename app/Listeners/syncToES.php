@@ -28,6 +28,8 @@ class syncToES
      */
     public function handle(PostSaved $event)
     {
-        Task::deliver(new SyncOnePostToES($event->post));
+        if (app()->environment() === 'production') {
+            Task::deliver(new SyncOnePostToES($event->post));
+        }
     }
 }
