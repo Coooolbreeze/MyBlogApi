@@ -44,7 +44,7 @@ return [
         'dispatch_mode'      => 1,
         'reactor_num'        => function_exists('\swoole_cpu_num') ? \swoole_cpu_num() * 2 : 4,
         'worker_num'         => function_exists('\swoole_cpu_num') ? \swoole_cpu_num() * 2 : 8,
-        'task_worker_num'   => function_exists('\swoole_cpu_num') ? \swoole_cpu_num() * 2 : 4,
+        'task_worker_num'   => function_exists('\swoole_cpu_num') ? \swoole_cpu_num() * 2 : 2,
         'task_ipc_mode'      => 3,
         'task_max_request'   => 3000,
         'task_tmpdir'        => @is_writable('/dev/shm/') ? '/dev/shm' : '/tmp',
