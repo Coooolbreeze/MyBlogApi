@@ -84,9 +84,9 @@ class PostStatisticCache
         }
         \Cache::tags($this->tags)->increment($key);
 
-//        if (app()->environment() === 'production') {
-//            Task::deliver(new SyncOnePostToES(Post::find($this->postId)));
-//        }
+        if (app()->environment() === 'production') {
+            Task::deliver(new SyncOnePostToES(Post::find($this->postId)));
+        }
     }
 
     /**
