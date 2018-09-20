@@ -46,10 +46,6 @@ use App\Exceptions\BaseException;
  */
 class Post extends Model
 {
-    protected $dispatchesEvents = [
-        'saved' => PostSaved::class
-    ];
-
     public function tags()
     {
         return $this->belongsToMany('App\Models\Tag');

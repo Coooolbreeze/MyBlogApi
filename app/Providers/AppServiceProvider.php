@@ -3,7 +3,9 @@
 namespace App\Providers;
 
 use App\Models\Link;
+use App\Models\Post;
 use App\Observers\LinkObserver;
+use App\Observers\PostObserver;
 use Illuminate\Support\ServiceProvider;
 use Elasticsearch\ClientBuilder as ESClientBuilder;
 
@@ -17,6 +19,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Link::observe(LinkObserver::class);
+        Post::observe(PostObserver::class);
     }
 
     /**
