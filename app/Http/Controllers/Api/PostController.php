@@ -33,13 +33,16 @@ class PostController extends ApiController
             'body' => [
                 'from' => ($page - 1) * $limit,
                 'size' => $limit,
+                'sort' => [
+                    ['id' => 'desc']
+                ]
             ],
         ];
 
         if ($sort = $request->input('sort', '')) {
             if(preg_match('/^(.+)_(asc|desc)$/', $sort, $m)) {
                 if (in_array($m[1], ['watch', 'like'])) {
-                    $params['body']['sort'] = [[$m[1] => $m[2]]];
+                    $params['body']['sort'][] = [$m[1] => $m[2]];
                 }
             }
         }
