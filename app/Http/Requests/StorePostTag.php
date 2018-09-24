@@ -12,7 +12,7 @@ class StorePostTag extends Request
     public function rules()
     {
         return [
-            'name' => 'required|unique:tags|max:12'
+            'name' => 'required|unique:tags|max:15'
         ];
     }
 }
